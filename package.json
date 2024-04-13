@@ -1,0 +1,42 @@
+{
+  "name": "dashscope-node",
+  "version": "0.1.3",
+  "description": "通义千问 灵积大模型 人工智能 dashscope AI nodejs/Typescript OpenAPI SDK",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pontjs/dashscope-node"
+  },
+  "scripts": {
+    "generate": "pontx generate",
+    "watch": "tsc -w",
+    "example": "node example/index.js",
+    "build": "tsc && cp src/sdk/*.d.ts lib/sdk/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "example",
+    "lib",
+    "*.md"
+  ],
+  "keywords": [
+    "通义千问",
+    "灵积",
+    "大模型",
+    "dashscope",
+    "AI",
+    "nodejs",
+    "Typescript",
+    "OpenAPI",
+    "人工智能",
+    "SDK"
+  ],
+  "author": "jasonHzq",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "2",
+    "pontx-sdk-core": "^0.4.5",
+    "web-streams-nodejs": "^0.1.1"
+  }
+}

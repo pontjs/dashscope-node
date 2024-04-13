@@ -1,0 +1,356 @@
+{
+  "apis": {
+    "chat/completion": {
+      "consumes": [
+        "application/json"
+      ],
+      "method": "post",
+      "name": "completion",
+      "parameters": [
+        {
+          "in": "query",
+          "name": "enable",
+          "required": false,
+          "schema": {
+            "description": "启用SSE响应，可选值text/event-stream",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        },
+        {
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/CompletionBody"
+          }
+        }
+      ],
+      "path": "/api/v1/services/aigc/text-generation/generation",
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "请求成功",
+          "schema": {
+            "$ref": "#/definitions/CompletionResponse"
+          }
+        },
+        "400": {
+          "description": "请求参数错误",
+          "schema": {
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "request_id": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      }
+    },
+    "chat/streamCompletion": {
+      "consumes": [
+        "application/json"
+      ],
+      "method": "post",
+      "name": "streamCompletion",
+      "parameters": [
+        {
+          "in": "query",
+          "name": "enable",
+          "required": false,
+          "schema": {
+            "description": "启用SSE响应，可选值text/event-stream",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        },
+        {
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/CompletionBody"
+          }
+        }
+      ],
+      "path": "/api/v1/services/aigc/text-generation/generation",
+      "produces": [
+        "text/event-stream"
+      ],
+      "responses": {
+        "200": {
+          "description": "请求成功",
+          "schema": {
+            "$ref": "#/definitions/CompletionResponse"
+          }
+        },
+        "400": {
+          "description": "请求参数错误",
+          "schema": {
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "request_id": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CompletionBody": {
+      "description": "API调用的主体内容",
+      "properties": {
+        "input": {
+          "properties": {
+            "messages": {
+              "items": {
+                "properties": {
+                  "content": {
+                    "description": "消息内容",
+                    "type": "string"
+                  },
+                  "role": {
+                    "description": "消息角色",
+                    "enum": [
+                      "system",
+                      "user",
+                      "assistant",
+                      "tool"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "model": {
+          "default": "qwen-max",
+          "description": "指定用于对话的通义千问模型名",
+          "enum": [
+            "qwen-turbo",
+            "qwen-plus",
+            "qwen-max",
+            "qwen-max-0403",
+            "qwen-max-0107",
+            "qwen-max-1201",
+            "qwen-max-longcontext"
+          ],
+          "type": "string"
+        },
+        "parameters": {
+          "properties": {
+            "enable_search": {
+              "default": false,
+              "description": "是否启用互联网搜索",
+              "type": "boolean"
+            },
+            "incremental_output": {
+              "default": false,
+              "description": "是否使用增量输出模式",
+              "type": "boolean"
+            },
+            "max_tokens": {
+              "default": 1500,
+              "description": "生成token的最大数量",
+              "type": "number"
+            },
+            "repetition_penalty": {
+              "default": 1.1,
+              "description": "重复度控制",
+              "type": "number"
+            },
+            "result_format": {
+              "default": "text",
+              "description": "输出格式",
+              "enum": [
+                "text",
+                "message"
+              ],
+              "type": "string"
+            },
+            "seed": {
+              "default": 1234,
+              "description": "随机数种子",
+              "format": "int64",
+              "type": "number"
+            },
+            "stop": {
+              "description": "停止生成的字符串或token_ids",
+              "items": {
+                "format": "byte",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "temperature": {
+              "default": 0.85,
+              "description": "随机性和多样性控制",
+              "type": "number"
+            },
+            "tools": {
+              "items": {
+                "properties": {
+                  "function": {
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "parameters": {
+                        "description": "function参数描述",
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": {
+                    "enum": [
+                      "function"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "top_k": {
+              "default": 50,
+              "description": "采样候选集的大小",
+              "type": "number"
+            },
+            "top_p": {
+              "default": 0.8,
+              "description": "核采样方法概率阈值",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "CompletionResponse": {
+      "properties": {
+        "output": {
+          "properties": {
+            "choices": {
+              "items": {
+                "properties": {
+                  "finish_reason": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "properties": {
+                      "content": {
+                        "type": "string"
+                      },
+                      "role": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "tool_calls": {
+                    "items": {
+                      "properties": {
+                        "function": {
+                          "properties": {
+                            "arguments": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "finish_reason": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "usage": {
+          "properties": {
+            "input_tokens": {
+              "type": "number"
+            },
+            "output_tokens": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "description": "阿里云 DashScope 灵积模型服务 OpenAPI",
+  "directories": [
+    {
+      "children": [
+        "chat/completion",
+        "chat/streamCompletion"
+      ],
+      "namespace": "chat",
+      "title": ""
+    }
+  ],
+  "host": "dashscope.aliyuncs.com",
+  "name": "single",
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "securitySchemes": {
+    "ApiKeyAuth": {
+      "scheme": "bearer",
+      "type": "http"
+    }
+  },
+  "title": "灵积模型服务 OpenAPI",
+  "version": "0.0.1"
+}
