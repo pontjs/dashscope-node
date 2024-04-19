@@ -24,12 +24,16 @@ const streamSample = async () => {
   );
 
   while (true) {
-    const { done, value } = await result.read();
+    const { done, events } = await result.read();
 
     if (done) {
       return;
     }
-    process.stdout.write(value.data?.output?.text);
+
+    const text = (events || [])
+      .map((event) => event.data?.output?.text)
+      .join('');
+    process.stdout.write(text);
   }
 };
 
@@ -98,12 +102,15 @@ const normalSample = async () => {
     }
   );
 
-  process.stdout.write(result?.output?.text);
+  process.stdout.write(result?.output?.text || '');
 };
 
 const main = async () => {
+  console.log('普通示例，一次性请求:');
   await normalSample();
+  console.log('流式示例:');
   await streamSample();
+  console.log('事件流示例:');
   await eventStreamSample();
 };
 

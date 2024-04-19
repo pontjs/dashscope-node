@@ -14,10 +14,10 @@ node-fetch@2:
   dependencies:
     whatwg-url "^5.0.0"
 
-pontx-sdk-core@^0.4.5:
-  version "0.4.5"
-  resolved "https://registry.npmjs.org/pontx-sdk-core/-/pontx-sdk-core-0.4.5.tgz#d77c45490ed2b7d2e2a3d806097f5957c53e9f9c"
-  integrity sha512-aSqmcqzjtyCrpnLXoZfgQ+BX8sqqf74uODWnqDQxgOjExaAiBlMcnzPh99jUdvedNX5KBk9Sg2OaX3ubGS2UUg==
+pontx-sdk-core@^0.4.11:
+  version "0.4.11"
+  resolved "https://registry.npmjs.org/pontx-sdk-core/-/pontx-sdk-core-0.4.11.tgz#55e3a7afb73faa851bfd6a2cd4068edf086207dc"
+  integrity sha512-asvP0jdgOeoCinf3dpyZesJ70axi1xGiZdnI2hGrGoxvLc9bFp6zZNo0c3Sptdgd7t9f8ehheKbRQ85gXEjCBA==
 
 tr46@~0.0.3:
   version "0.0.3"
